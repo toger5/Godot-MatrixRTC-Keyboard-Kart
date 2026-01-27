@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://diqdpboqfe3x5"]
+
+[ext_resource type="Script" uid="uid://dm7bc7k0vwy38" path="res://matrixRTCBridge.gd" id="1_847gr"]
+[ext_resource type="Texture2D" uid="uid://dgqve3hgjxl58" path="res://icon.svg" id="1_q3wob"]
+
+[node name="mainControl" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="TextEdit" type="Label" parent="."]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 23.0
+text = "Hello world"
+script = ExtResource("1_847gr")
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(136, 93)
+texture = ExtResource("1_q3wob")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 178.0
+offset_right = 205.0
+offset_bottom = 209.0
+text = "Send from godot button"
+
+[connection signal="pressed" from="Button" to="TextEdit" method="_on_button_pressed"]

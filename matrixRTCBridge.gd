@@ -1,0 +1,49 @@
+extends Node
+
+var _data_callback_ref = JavaScriptBridge.create_callback(_data_callback)
+var _members_callback_ref = JavaScriptBridge.create_callback(_members_callback)
+var _local_member_callback_ref = JavaScriptBridge.create_callback(_local_member_callback)
+var console;
+var sdk;
+
+signal member_change(members)
+signal local_member_change(member)
+signal car_position_change(member_id: String, car_pos: int)
+
+func update_own_car_position(car_pos: int):
+	sdk.sendData(car_pos)
+
+
+func _ready():
+	console = JavaScriptBridge.get_interface("console")
+	console.log("GODOT ready")
+	
+	sdk = JavaScriptBridge.get_interface("window").matrixRTCSdk
+	
+	sdk.dataObs.subscribe(_data_callback_ref)
+	sdk.membersObs.subscribe(_members_callback_ref)
+	sdk.localMemberObs.subscribe(_local_member_callback_ref)
+
+func _data_callback(args:Array):
+	var data_rtc_obj = args[0]
+	var car_pos = data_rtc_obj.data;
+	console.log("GODOT _data_callback", data_rtc_obj)
+	var id = data_rtc_obj.rtcBackendIdentity
+	emit_signal("car_position_change", id, car_pos)
+	console.log("GODOT on data:", JSON.stringify(data_rtc_obj))
+
+func _members_callback(args):
+	var members_rtc = args[0]
+	var members = []
+	for i in range(members_rtc.length):
+		var member_rtc = members_rtc[i]
+		console.log("GODOT _members_callback index: ",i,"member: ", member_rtc, "userId: ",member_rtc.membership.userId, "memberId: ", member_rtc.membership.memberId)
+		var m = {"id":member_rtc.membership.memberId,"name": member_rtc.membership.userId}
+		console.log("GODOT _members_callback add: ", JSON.stringify(m))
+		members.push_back(m)
+	console.log("GODOT _members_callback final list: ", members)
+	emit_signal("member_change", members)
+	
+func _local_member_callback(args):
+	var local_member_rtc = args[0]
+	emit_signal("local_member_change", {"id":local_member_rtc.membership.memberId, "name": local_member_rtc.membership.userId})
