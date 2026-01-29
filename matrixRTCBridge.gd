@@ -46,5 +46,9 @@ func _members_callback(args):
 
 func _local_member_callback(args):
 	var local_member_rtc = args[0]
+	if TYPE_NIL ==typeof(local_member_rtc):
+		# This can be Nil -> we do not want gd script to crash on local_member_rtc.membership
+		return
+
 	console.log("GODOT _local_member_callback emit: ", "id",local_member_rtc.membership.memberId, "name", local_member_rtc.membership.userId)
 	emit_signal("local_member_change", {"id":local_member_rtc.membership.memberId, "name": local_member_rtc.membership.userId})
