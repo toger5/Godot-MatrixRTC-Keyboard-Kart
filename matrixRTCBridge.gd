@@ -17,13 +17,13 @@ func update_own_car_position(car_pos: int):
 func _ready():
 	console = JavaScriptBridge.get_interface("console")
 	console.log("GODOT ready")
-	
+
 	sdk = JavaScriptBridge.get_interface("window").matrixRTCSdk
-	
+
+func start_emitters():
 	sdk.dataObs.subscribe(_data_callback_ref)
 	sdk.membersObs.subscribe(_members_callback_ref)
 	sdk.localMemberObs.subscribe(_local_member_callback_ref)
-
 func _data_callback(args:Array):
 	var data_rtc_obj = args[0]
 	var car_pos = data_rtc_obj.data;
@@ -39,11 +39,12 @@ func _members_callback(args):
 		var member_rtc = members_rtc[i]
 		console.log("GODOT _members_callback index: ",i,"member: ", member_rtc, "userId: ",member_rtc.membership.userId, "memberId: ", member_rtc.membership.memberId)
 		var m = {"id":member_rtc.membership.memberId,"name": member_rtc.membership.userId}
-		console.log("GODOT _members_callback add: ", JSON.stringify(m))
+
 		members.push_back(m)
 	console.log("GODOT _members_callback final list: ", members)
 	emit_signal("member_change", members)
-	
+
 func _local_member_callback(args):
 	var local_member_rtc = args[0]
+	console.log("GODOT _local_member_callback emit: ", "id",local_member_rtc.membership.memberId, "name", local_member_rtc.membership.userId)
 	emit_signal("local_member_change", {"id":local_member_rtc.membership.memberId, "name": local_member_rtc.membership.userId})

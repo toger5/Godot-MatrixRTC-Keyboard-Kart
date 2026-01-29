@@ -69,11 +69,11 @@ func on_own_position_update(car_postition, car_pos_text):
 	$RtcBridge.update_own_car_position(car_postition)
 
 func _ready() -> void:
-	
 	#connect to RtcBridgeSignals
 	$RtcBridge.connect("car_position_change",on_position_update)
 	$RtcBridge.connect("member_change", on_rtc_member_update)
 	$RtcBridge.connect("local_member_change", on_local_rtc_member_update)
+	$RtcBridge.start_emitters()
 	
 	set_process_input(true)
 	
