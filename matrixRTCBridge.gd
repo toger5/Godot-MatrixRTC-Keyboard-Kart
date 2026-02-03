@@ -13,10 +13,13 @@ signal car_position_change(member_id: String, car_pos: int)
 func update_own_car_position(car_pos: int):
 	sdk.sendData(car_pos)
 
+func send_text_message(message: String):
+	sdk.sendRoomMessage(message)
 
 func _ready():
 	console = JavaScriptBridge.get_interface("console")
 	console.log("GODOT ready")
+	console.warn("danger")
 
 	sdk = JavaScriptBridge.get_interface("window").matrixRTCSdk
 
@@ -24,6 +27,7 @@ func start_emitters():
 	sdk.dataObs.subscribe(_data_callback_ref)
 	sdk.membersObs.subscribe(_members_callback_ref)
 	sdk.localMemberObs.subscribe(_local_member_callback_ref)
+
 func _data_callback(args:Array):
 	var data_rtc_obj = args[0]
 	var car_pos = data_rtc_obj.data;

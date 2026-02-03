@@ -5,104 +5,27 @@
         <meta charset="utf-8" />
         <script src="$GODOT_URL"></script>
         <script type="module">
-            // TODO use the url where the matrixrtc-sdk.js file from where dist is hosted
             import { createMatrixRTCSdk } from "./dist/matrixrtc-sdk.js";
+
+            const APPLICATION = "com.github.toger5.rtc-application-type", // rtc application type
 
             var engine = new Engine($GODOT_CONFIG);
             engine.startGame();
 
-            try {
-                window.matrixRTCSdk = await createMatrixRTCSdk(
-                    "com.github.toger5.rtc-application-type", // rtc application type
-                );
-                console.info(
-                    "createMatrixRTCSdk com.github.toger5.rtc-application-type was created!",
-                );
-            } catch (e) {
+            window.matrixRTCSdk = await createMatrixRTCSdk(APPLICATION).catch((e) => {
                 console.error("createMatrixRTCSdk", e);
-            }
-            const sdk = window.matrixRTCSdk;
-            sdk.dataObs = sdk.data$;
-            sdk.membersObs = sdk.members$;
-            sdk.localMemberObs = sdk.localMember$;
+            });
+
+            // Rename to a var without `$` to be comaptible with godot
+            window.matrixRTCSdk.dataObs = window.matrixRTCSdk.data$;
+            window.matrixRTCSdk.membersObs = window.matrixRTCSdk.members$;
+            window.matrixRTCSdk.localMemberObs = window.matrixRTCSdk.localMember$;
 
             const connectionState = sdk.join();
             console.info("matrixRTCSdk joined");
-
-            const div = document.getElementById("data");
-            div.innerHTML = "<h3>Data:</h3>";
-
-            sdk.data$.subscribe((data) => {
-                const child = document.createElement("p");
-                child.innerHTML = JSON.stringify(data);
-                div.appendChild(child);
-            });
-
-            sdk.members$.subscribe((memberObjects) => {
-                const div = document.getElementById("members");
-                div.innerHTML = "<h3>Members:</h3>";
-
-                // Create member list
-                const members = memberObjects.map(
-                    (member) => member.membership.sender,
-                );
-                console.info("members changed", members);
-                for (const m of members) {
-                    console.info("member", m);
-                    const child = document.createElement("p");
-                    child.innerHTML = m;
-                    div.appendChild(child);
-                }
-            });
-
-            sdk.connected$.subscribe((connected) => {
-                console.info("connected changed", connected);
-                const div = document.getElementById("connect_status");
-                div.innerHTML = connected ? "Connected" : "Disconnected";
-            });
-
-            window.toggleJsOverlay = () => {
-                const height =
-                    document.getElementById("js-overlay").style.maxHeight;
-                if (height === "40px") {
-                    document.getElementById("js-overlay").style.maxHeight =
-                        "500px";
-                } else {
-                    document.getElementById("js-overlay").style.maxHeight =
-                        "40px";
-                }
-            };
         </script>
     </head>
     <body>
         <canvas id="canvas"></canvas>
-        <div
-            style="
-                position: absolute;
-                top: 0;
-                right: 0;
-                background-color: #ffffff10;
-                overflow: hidden;
-                max-height: 500px;
-            "
-            id="js-overlay"
-        >
-            <div id="connect_status"></div>
-            <button onclick="window.matrixRTCSdk.leave()">Leave</button>
-            <button
-                onclick="window.matrixRTCSdk.sendData({ prop: 'Hello, world!' })"
-            >
-                Send Text
-            </button>
-            <button onclick="window.toggleJsOverlay()">collapse</button>
-            <div
-                id="members"
-                style="overflow: scroll; width: 200px; max-height: 300px"
-            ></div>
-            <div
-                id="data"
-                style="overflow: scroll; width: 200px; max-height: 300px"
-            ></div>
-        </div>
     </body>
 </html>

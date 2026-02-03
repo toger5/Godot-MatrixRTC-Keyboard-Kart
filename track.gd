@@ -51,6 +51,7 @@ func on_local_rtc_member_update(member):
 	if(ownCar != null):
 		$RtcBridge.console.log("try adding own car again! wo do not do this yet")
 		return
+	$RtcBridge.send_text_message("I am entering the RACE 🚗")
 	$RtcBridge.console.log("GODOT adding our own car:", member.id, member.name)
 	ownCar=$Car.duplicate()
 	ownCar.is_own = true
@@ -60,6 +61,7 @@ func on_local_rtc_member_update(member):
 	ownCar.name_label = member.name
 	ownCar.visible = true
 	ownCar.connect("car_position_update", on_own_position_update)
+	ownCar.connect("turn_completed", on_own_turn_complete)
 	carPath.add_child(ownCar)
 	carPath.visible=true
 	on_rtc_member_update(all_members)
@@ -67,6 +69,20 @@ func on_local_rtc_member_update(member):
 func on_own_position_update(car_postition, car_pos_text):
 	$TypeHelper.text = text.right(-car_pos_text).left(CHAR_VIEW_RANGE)
 	$RtcBridge.update_own_car_position(car_postition)
+
+func on_own_turn_complete(turn, duration):
+	var best = ownCar.get_best_turn()
+	print("GODOT best turn: ",best )
+	var best_string = ""
+	if best != null and best.size()>1:
+		var numbers = ["one", "two",  "three"]
+		var turn_number = best[0]
+		if turn_number < numbers.size():
+			turn_number= numbers[turn_number]
+		best_string="(Best: turn "+str(best[0])+" in "+str(float(best[1]) / float(1000),2) + "seconds) "
+	var message = best_string + "🚗 Completed my "+str(turn)+" in " + str(float(duration) / float(1000),2) + "seconds"
+	print("GODOT message to sent", message)
+	$RtcBridge.send_text_message(message)
 
 func _ready() -> void:
 	#connect to RtcBridgeSignals
