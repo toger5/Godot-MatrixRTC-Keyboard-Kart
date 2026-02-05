@@ -84,11 +84,18 @@ func on_own_turn_complete(turn, duration):
 	print("GODOT message to sent", message)
 	$RtcBridge.send_text_message(message)
 
+func on_connected_changed(connected:bool) -> void:
+	if not connected:
+		if ownCar:
+			carPath.remove_child(ownCar)
+			ownCar = null
+
 func _ready() -> void:
 	#connect to RtcBridgeSignals
 	$RtcBridge.connect("car_position_change",on_position_update)
 	$RtcBridge.connect("member_change", on_rtc_member_update)
 	$RtcBridge.connect("local_member_change", on_local_rtc_member_update)
+	$RtcBridge.connect("connected_changed", on_connected_changed)
 	$RtcBridge.start_emitters()
 	
 	set_process_input(true)
