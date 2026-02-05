@@ -67,24 +67,18 @@ func _connected_callback(args):
 	if connected_status:
 		%Leave.visible = true
 		%Join.visible = false
-		%JoinBg.visible = false
 	else:
 		%Leave.visible = false
 		%Join.visible = true
-		%JoinBg.visible = true
 	emit_signal("connected_changed", args[0])
 
 
 func _on_leave_pressed() -> void:
-	emit_signal("connected_changed", false)
 	%Leave.visible = false
 	%Join.visible = true
-	%JoinBg.visible = true
 	sdk.leave()
 
 func _on_join_pressed() -> void:
-	emit_signal("connected_changed", true)
 	%Leave.visible = true
 	%Join.visible = false
-	%JoinBg.visible = false
 	sdk.join()
