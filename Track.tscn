@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cqs0nhg12serw" path="res://assets/map.svg" id="2_0j5gg"]
 [ext_resource type="Script" uid="uid://b1ryqfo8uh20r" path="res://car.gd" id="2_7by0s"]
 [ext_resource type="Texture2D" uid="uid://dgqve3hgjxl58" path="res://icon.svg" id="2_8dni2"]
-[ext_resource type="Script" uid="uid://rmawjarusoh8" path="res://mockRTCBridge.gd" id="5_0j5gg"]
+[ext_resource type="Script" uid="uid://dm7bc7k0vwy38" path="res://matrixRTCBridge.gd" id="4_fo0vr"]
 
 [sub_resource type="Curve2D" id="Curve2D_xe1eg"]
 bake_interval = 1.0
@@ -74,4 +74,4 @@ metadata/_edit_use_anchors_ = true
 
 [node name="RtcBridge" type="Node" parent="."]
 unique_name_in_owner = true
-script = ExtResource("5_0j5gg")
+script = ExtResource("4_fo0vr")
