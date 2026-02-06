@@ -7,11 +7,7 @@
         <script type="module">
             import { createMatrixRTCSdk } from "./dist/matrixrtc-sdk.js";
 
-            console.log("HELLO");
             const APPLICATION = "com.github.toger5.rtc-application-type"; // rtc application type
-
-            var engine = new Engine($GODOT_CONFIG);
-            engine.startGame();
 
             console.log("matrixRTCSdk before create");
             window.matrixRTCSdk = await createMatrixRTCSdk(APPLICATION).catch(
@@ -24,11 +20,11 @@
             // Rename to a var without `$` to be comaptible with godot
             window.matrixRTCSdk.dataObs = window.matrixRTCSdk.data$;
             window.matrixRTCSdk.membersObs = window.matrixRTCSdk.members$;
-            window.matrixRTCSdk.localMemberObs =
-                window.matrixRTCSdk.localMember$;
-            console.log("matrixRTCSdk before join");
-            const connectionState = window.matrixRTCSdk.join();
-            console.log("matrixRTCSdk after join");
+            window.matrixRTCSdk.localMemberObs = window.matrixRTCSdk.localMember$;
+            window.matrixRTCSdk.connectedObs = window.matrixRTCSdk.connected$;
+
+            var engine = new Engine($GODOT_CONFIG);
+            engine.startGame();
         </script>
     </head>
     <body>
