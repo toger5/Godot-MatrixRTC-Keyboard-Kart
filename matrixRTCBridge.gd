@@ -64,6 +64,12 @@ func _local_member_callback(args):
 func _connected_callback(args):
 	print("GODOT Update connectedObs", args[0])
 	var connected_status: bool = args[0]
+	var status_text : String
+	if connected_status:
+		status_text = "Connected"
+	else:
+		status_text = "Not Connected"
+	%Status.text = "Status: " + status_text
 	if connected_status:
 		%Leave.visible = true
 		%Join.visible = false
@@ -74,11 +80,13 @@ func _connected_callback(args):
 
 
 func _on_leave_pressed() -> void:
+	%Status.text = "Status: Leaving..."
 	%Leave.visible = false
 	%Join.visible = true
 	sdk.leave()
 
 func _on_join_pressed() -> void:
+	%Status.text = "Status: Joining..."
 	%Leave.visible = true
 	%Join.visible = false
 	sdk.join()

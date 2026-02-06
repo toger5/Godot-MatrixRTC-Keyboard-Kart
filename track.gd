@@ -2,7 +2,7 @@ extends Node2D
 #Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 var text = "Lorem ipsum dolor sit amet, ut labore et dolore magna aliqua. Ut enim ad minim veniam."
 # Called when the node enters the scene tree for the first time.
-@onready var carPath = %Path2D.duplicate()
+@onready var carPath = %CarPath
 @onready var letterPath = %Path2D
 const CHAR_VIEW_RANGE = 3
 
@@ -39,10 +39,11 @@ func on_rtc_member_update(members):
 
 	for i in range(missing_opponents.size()):
 		var opponent = missing_opponents[i]
-		var car = %Car.duplicate()
+		var car : PathFollow2D = %Car.duplicate()
 		car.name_label = opponent.name
 		car.id = opponent.id
-		car.text = text;
+		car.text = text
+		car.rotation_degrees = 70
 		car.visible=true
 		carPath.add_child(car)
 		%RtcBridge.console.log("GODOT add car for:",JSON.stringify(opponent)," with id: ", opponent.id," with name: ", car.name_label)
