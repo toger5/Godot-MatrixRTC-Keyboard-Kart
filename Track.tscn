@@ -31,12 +31,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Background" type="ColorRect" parent="." unique_id=1614877723]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.33333334, 0.78431374, 0.9098039, 1)
+
 [node name="GameTitle" type="Label" parent="." unique_id=1526659825]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
-offset_right = 201.0
-offset_bottom = 49.875
+offset_right = 266.0
+offset_bottom = 63.0
 theme_override_font_sizes/font_size = 40
 text = "FloorIt Ipsum"
 metadata/_edit_layout_mode = 1
@@ -49,8 +58,8 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 8.0
-offset_top = -30.333008
-offset_right = 111.0
+offset_top = -42.999695
+offset_right = 278.0
 offset_bottom = -7.999695
 grow_vertical = 0
 theme_override_font_sizes/font_size = 25
