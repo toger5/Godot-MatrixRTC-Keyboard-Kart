@@ -11,6 +11,38 @@ var current_progress_animated = 0.0 # this progress goes beyond 1 to track multi
 var turn = 0
 var turn_start_ts = []
 
+@onready var sprite: Sprite2D = $Sprite2D
+@onready var car_textures: Array[Texture2D] = [
+	preload("uid://h1wjpmx2v2fo"),
+	preload("uid://b1nbsyt0jyl4a"),
+	preload("uid://c6haos62e5wn5"),
+	preload("uid://xk5ct12o4uro"),
+	preload("uid://d0welqmjje707"),
+	preload("uid://csw3fassryrb7"),
+	preload("uid://dxvkm7lrclc7e"),
+	preload("uid://8o2dta04b8gq"),
+	preload("uid://cy3fn8awdfgac"),
+	preload("uid://vcgb6v08y7gr"),
+	preload("uid://bsv1elgudqvfu"),
+	preload("uid://6iyhkmlubmpa"),
+	preload("uid://cbf4yurvlaxlj"),
+	preload("uid://b506nlun6pysb"),
+	preload("uid://c231odca1h6kt"),
+	preload("uid://cn1rhqwakgbbg"),
+	preload("uid://baga0eq21c2ux"),
+	preload("uid://bij302w3514ar"),
+	preload("uid://hq01h713c2mf"),
+	preload("uid://dfw4xdnyn47g5"),
+	preload("uid://5tysxo80jv5f"),
+	preload("uid://bcld57hbggldo"),
+	preload("uid://b8ktbv2oh7nxo"),
+	preload("uid://bpjuw5mcb48ms"),
+	preload("uid://3aqqgoxoh3a3"),
+	preload("uid://u5s62k2iib0t"),
+	preload("uid://8bj52qh1w8rd")
+]
+
+
 signal car_position_update(car_postition: int, car_pos_text: int)
 signal turn_completed(turn: int, time: int)
 
@@ -59,7 +91,10 @@ func on_focus_lost():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$Name.text = name_label
+	$Name.text = name_label.split(":")[0]
+	
+	var random_texture: Texture2D = car_textures.pick_random()
+	sprite.texture = random_texture
 	
 	if(is_own):
 		modulate = Color.WHITE

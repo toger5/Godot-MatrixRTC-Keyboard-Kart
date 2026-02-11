@@ -8,21 +8,26 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
-config/name="WebAppTest"
-run/main_scene="uid://bjwt3ktqp7yy0"
-config/features=PackedStringArray("4.5", "GL Compatibility")
-config/icon="res://icon.svg"
+config/name="Godot MatrixRTC Keyboard Kart"
+run/main_scene="uid://r8atwl231fsx"
+config/features=PackedStringArray("4.6", "GL Compatibility")
 
 [display]
 
 window/size/viewport_width=900
 window/size/viewport_height=900
+window/size/transparent=true
 window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-environment/defaults/default_clear_color=Color(0.79305273, 0.7104118, 0.52405596, 1)

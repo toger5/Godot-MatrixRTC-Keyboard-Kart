@@ -2,8 +2,8 @@ extends Node2D
 #Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 var text = "Lorem ipsum dolor sit amet, ut labore et dolore magna aliqua. Ut enim ad minim veniam."
 # Called when the node enters the scene tree for the first time.
-@onready var carPath = $Path2D.duplicate()
-@onready var letterPath = $Path2D
+@onready var carPath = %CarPath
+@onready var letterPath = %Path2D
 const CHAR_VIEW_RANGE = 3
 
 var all_members = []
@@ -13,7 +13,7 @@ func on_position_update(opponent_id, car_postition):
 	var opponent_cars = carPath.get_children().filter(func(o): return not o.is_own)
 	var index = opponent_cars.find_custom(func(o): return o.id == opponent_id)
 	if(index == -1):
-		$RtcBridge.console.log("cannot find opponent: ", opponent_id, " opponents: ", opponent_cars.map(func(o): return o.id))
+		%RtcBridge.console.log("cannot find opponent: ", opponent_id, " opponents: ", opponent_cars.map(func(o): return o.id))
 	else:
 		opponent_cars[index].car_position = car_postition
 
@@ -22,7 +22,7 @@ func on_rtc_member_update(members):
 	# call this method again
 	all_members = members
 	if(ownCar == null): 
-		$RtcBridge.console.log("Not adding opponents until we have our own car")
+		%RtcBridge.console.log("Not adding opponents until we have our own car")
 		return 
 	var opponent_members = all_members.filter(func(m): return m.id != ownCar.id)
 	var opponent_cars = carPath.get_children().filter(func(o): return not o.is_own)
@@ -39,21 +39,22 @@ func on_rtc_member_update(members):
 
 	for i in range(missing_opponents.size()):
 		var opponent = missing_opponents[i]
-		var car = $Car.duplicate()
+		var car : PathFollow2D = %Car.duplicate()
 		car.name_label = opponent.name
 		car.id = opponent.id
-		car.text = text;
+		car.text = text
+		car.rotation_degrees = 70
 		car.visible=true
 		carPath.add_child(car)
-		$RtcBridge.console.log("GODOT add car for:",JSON.stringify(opponent)," with id: ", opponent.id," with name: ", car.name_label)
+		%RtcBridge.console.log("GODOT add car for:",JSON.stringify(opponent)," with id: ", opponent.id," with name: ", car.name_label)
 
 func on_local_rtc_member_update(member):
 	if(ownCar != null):
-		$RtcBridge.console.log("try adding own car again! wo do not do this yet")
+		%RtcBridge.console.log("try adding own car again! wo do not do this yet")
 		return
-	$RtcBridge.send_text_message("I am entering the RACE 🚗")
-	$RtcBridge.console.log("GODOT adding our own car:", member.id, member.name)
-	ownCar=$Car.duplicate()
+	%RtcBridge.send_text_message("I am entering the RACE 🚗")
+	%RtcBridge.console.log("GODOT adding our own car:", member.id, member.name)
+	ownCar=%Car.duplicate()
 	ownCar.is_own = true
 	ownCar.name = "OwnCar"
 	ownCar.id = member.id
@@ -67,8 +68,8 @@ func on_local_rtc_member_update(member):
 	on_rtc_member_update(all_members)
 
 func on_own_position_update(car_postition, car_pos_text):
-	$TypeHelper.text = text.right(-car_pos_text).left(CHAR_VIEW_RANGE)
-	$RtcBridge.update_own_car_position(car_postition)
+	%TypeHelper.text = text.right(-car_pos_text).left(CHAR_VIEW_RANGE)
+	%RtcBridge.update_own_car_position(car_postition)
 
 func on_own_turn_complete(turn, duration):
 	var best = ownCar.get_best_turn()
@@ -82,27 +83,38 @@ func on_own_turn_complete(turn, duration):
 		best_string="(Best: turn "+str(best[0])+" in "+str(float(best[1]) / float(1000),2) + "seconds) "
 	var message = best_string + "🚗 Completed my "+str(turn)+" in " + str(float(duration) / float(1000),2) + "seconds"
 	print("GODOT message to sent", message)
-	$RtcBridge.send_text_message(message)
+	%RtcBridge.send_text_message(message)
+
+func on_connected_changed(connected:bool) -> void:
+	if not connected:
+		if ownCar:
+			carPath.remove_child(ownCar)
+			ownCar = null
+			%RtcBridge.send_text_message("I am leaving the RACE 🚗")
+			%TypeHelper.text = ""
+	else:
+		%TypeHelper.text = text.left(CHAR_VIEW_RANGE)
 
 func _ready() -> void:
 	#connect to RtcBridgeSignals
-	$RtcBridge.connect("car_position_change",on_position_update)
-	$RtcBridge.connect("member_change", on_rtc_member_update)
-	$RtcBridge.connect("local_member_change", on_local_rtc_member_update)
-	$RtcBridge.start_emitters()
+	%RtcBridge.connect("car_position_change",on_position_update)
+	%RtcBridge.connect("member_change", on_rtc_member_update)
+	%RtcBridge.connect("local_member_change", on_local_rtc_member_update)
+	%RtcBridge.connect("connected_changed", on_connected_changed)
+	%RtcBridge.start_emitters()
 	
 	set_process_input(true)
 	
-	self.add_child(carPath)
-	$TypeHelper.text = text.left(CHAR_VIEW_RANGE)
+	#self.add_child(carPath)
+	%TypeHelper.text = text.left(CHAR_VIEW_RANGE)
 
 	for i in range(text.length()):
 		var c = text[i]
-		var newLetter = $letter.duplicate()
+		var newLetter = %letter.duplicate()
 		if(c == ""):
 			newLetter.name = "space";
 		(newLetter.get_child(0) as Label).text = c;
-		$Path2D.add_child(newLetter)
+		%Path2D.add_child(newLetter)
 		newLetter.name = c;
 		newLetter.progress_ratio = float(i)/float(text.length())
 		newLetter.visible = true

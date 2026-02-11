@@ -3,12 +3,14 @@ extends Node
 var _data_callback_ref = JavaScriptBridge.create_callback(_data_callback)
 var _members_callback_ref = JavaScriptBridge.create_callback(_members_callback)
 var _local_member_callback_ref = JavaScriptBridge.create_callback(_local_member_callback)
-var console;
-var sdk;
+var _connected_callback_ref = JavaScriptBridge.create_callback(_connected_callback)
+var console
+var sdk
 
 signal member_change(members)
 signal local_member_change(member)
 signal car_position_change(member_id: String, car_pos: int)
+signal connected_changed(connected: bool)
 
 func update_own_car_position(car_pos: int):
 	sdk.sendData(car_pos)
@@ -27,6 +29,8 @@ func start_emitters():
 	sdk.dataObs.subscribe(_data_callback_ref)
 	sdk.membersObs.subscribe(_members_callback_ref)
 	sdk.localMemberObs.subscribe(_local_member_callback_ref)
+	sdk.connectedObs.subscribe(_connected_callback_ref)
+
 
 func _data_callback(args:Array):
 	var data_rtc_obj = args[0]
@@ -56,3 +60,33 @@ func _local_member_callback(args):
 
 	console.log("GODOT _local_member_callback emit: ", "id",local_member_rtc.membership.memberId, "name", local_member_rtc.membership.userId)
 	emit_signal("local_member_change", {"id":local_member_rtc.membership.memberId, "name": local_member_rtc.membership.userId})
+
+func _connected_callback(args):
+	print("GODOT Update connectedObs", args[0])
+	var connected_status: bool = args[0]
+	var status_text : String
+	if connected_status:
+		status_text = "Connected"
+	else:
+		status_text = "Not Connected"
+	%Status.text = "Status: " + status_text
+	if connected_status:
+		%Leave.visible = true
+		%Join.visible = false
+	else:
+		%Leave.visible = false
+		%Join.visible = true
+	emit_signal("connected_changed", args[0])
+
+
+func _on_leave_pressed() -> void:
+	%Status.text = "Status: Leaving..."
+	%Leave.visible = false
+	%Join.visible = true
+	sdk.leave()
+
+func _on_join_pressed() -> void:
+	%Status.text = "Status: Joining..."
+	%Leave.visible = true
+	%Join.visible = false
+	sdk.join()

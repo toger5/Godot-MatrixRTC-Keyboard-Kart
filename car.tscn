@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://t4eau1c7jnnr"]
+
+[ext_resource type="Script" uid="uid://b1ryqfo8uh20r" path="res://car.gd" id="1_uoj53"]
+[ext_resource type="Shader" uid="uid://bfw8sq0ttdmr1" path="res://car.gdshader" id="2_06lh1"]
+[ext_resource type="Texture2D" uid="uid://xk5ct12o4uro" path="res://assets/cars/car_pink.png" id="3_k61xc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_td361"]
+shader = ExtResource("2_06lh1")
+shader_parameter/thickness = 3.0000001425
+shader_parameter/ring_count = 6
+shader_parameter/ring_offset = 0.0
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/border_clipping_fix = true
+shader_parameter/aspect_ratio = 0.99999998137332
+shader_parameter/square_border = true
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/max_or_add = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_fo0vr"]
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 5
+shadow_color = Color(0, 0, 0, 0.33333334)
+
+[node name="Car" type="PathFollow2D" unique_id=1085320103]
+modulate = Color(1, 1, 1, 0.53333336)
+z_index = 5
+script = ExtResource("1_uoj53")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1813909526]
+material = SubResource("ShaderMaterial_td361")
+rotation = 1.5707964
+scale = Vector2(0.6, 0.5)
+texture = ExtResource("3_k61xc")
+flip_h = true
+
+[node name="Name" type="Label" parent="." unique_id=802800898]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -30.0
+offset_top = -184.0
+offset_right = 141.0
+offset_bottom = -161.0
+grow_horizontal = 0
+rotation = 1.5707964
+pivot_offset = Vector2(32, 11)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "playerName"
+label_settings = SubResource("LabelSettings_fo0vr")
+horizontal_alignment = 2
