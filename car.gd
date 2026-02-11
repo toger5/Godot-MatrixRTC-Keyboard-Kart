@@ -10,25 +10,38 @@ var name_label: String = "unkownUser"
 var current_progress_animated = 0.0 # this progress goes beyond 1 to track multiple rounds. It is the animated version of car_postion
 var turn = 0
 var turn_start_ts = []
-var previous_global_x: float
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var car_textures: Array[Texture2D] = [
-	preload("res://assets/cars/blue-car.png"),
-	preload("res://assets/cars/brown-datsun.png"),
-	preload("res://assets/cars/camper-van.png"),
-	preload("res://assets/cars/flatbed-with-house.png"),
-	preload("res://assets/cars/ice-cream-van-a.png"),
-	preload("res://assets/cars/ice-cream-van-b.png"),
-	preload("res://assets/cars/luton-van.png"),
-	preload("res://assets/cars/motor-cycle-a.png"),
-	preload("res://assets/cars/motor-cycle-b.png"),
-	preload("res://assets/cars/pink-jeep.png"),
-	preload("res://assets/cars/red-corolla.png"),
-	preload("res://assets/cars/white-plumbing-van.png"),
-	preload("res://assets/cars/yellow-bus.png"),
-	preload("res://assets/cars/yellow-sports-car.png")
+	preload("uid://h1wjpmx2v2fo"),
+	preload("uid://b1nbsyt0jyl4a"),
+	preload("uid://c6haos62e5wn5"),
+	preload("uid://xk5ct12o4uro"),
+	preload("uid://d0welqmjje707"),
+	preload("uid://csw3fassryrb7"),
+	preload("uid://dxvkm7lrclc7e"),
+	preload("uid://8o2dta04b8gq"),
+	preload("uid://cy3fn8awdfgac"),
+	preload("uid://vcgb6v08y7gr"),
+	preload("uid://bsv1elgudqvfu"),
+	preload("uid://6iyhkmlubmpa"),
+	preload("uid://cbf4yurvlaxlj"),
+	preload("uid://b506nlun6pysb"),
+	preload("uid://c231odca1h6kt"),
+	preload("uid://cn1rhqwakgbbg"),
+	preload("uid://baga0eq21c2ux"),
+	preload("uid://bij302w3514ar"),
+	preload("uid://hq01h713c2mf"),
+	preload("uid://dfw4xdnyn47g5"),
+	preload("uid://5tysxo80jv5f"),
+	preload("uid://bcld57hbggldo"),
+	preload("uid://b8ktbv2oh7nxo"),
+	preload("uid://bpjuw5mcb48ms"),
+	preload("uid://3aqqgoxoh3a3"),
+	preload("uid://u5s62k2iib0t"),
+	preload("uid://8bj52qh1w8rd")
 ]
+
 
 signal car_position_update(car_postition: int, car_pos_text: int)
 signal turn_completed(turn: int, time: int)
@@ -80,8 +93,6 @@ func on_focus_lost():
 func _ready() -> void:
 	$Name.text = name_label
 	
-	previous_global_x = global_position.x
-	
 	var random_texture: Texture2D = car_textures.pick_random()
 	sprite.texture = random_texture
 	
@@ -111,11 +122,3 @@ func _process(delta: float) -> void:
 	if(dir > 0):
 		current_progress_animated += step
 		self.progress_ratio = current_progress_animated
-	
-	var current_x = global_position.x
-	var delta_x = current_x - previous_global_x
-
-	if abs(delta_x) > 0.1:
-		sprite.flip_h = delta_x > 0
-
-	previous_global_x = current_x

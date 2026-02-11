@@ -35,7 +35,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.33333334, 0.78431374, 0.9098039, 1)
+color = Color(0.79305273, 0.7104118, 0.52405596, 1)
 
 [node name="GameTitle" type="Label" parent="." unique_id=1526659825]
 layout_mode = 0

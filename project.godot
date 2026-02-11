@@ -17,7 +17,6 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="Godot MatrixRTC Keyboard Kart"
 run/main_scene="uid://r8atwl231fsx"
 config/features=PackedStringArray("4.6", "GL Compatibility")
-config/icon="uid://dl8lp64m6x56h"
 
 [display]
 
