@@ -91,7 +91,7 @@ func on_focus_lost():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$Name.text = name_label
+	$Name.text = name_label.split(":")[0]
 	
 	var random_texture: Texture2D = car_textures.pick_random()
 	sprite.texture = random_texture

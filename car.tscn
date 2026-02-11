@@ -30,7 +30,7 @@ script = ExtResource("1_uoj53")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1813909526]
 material = SubResource("ShaderMaterial_td361")
 rotation = 1.5707964
-scale = Vector2(1, 0.833)
+scale = Vector2(0.6, 0.5)
 texture = ExtResource("3_k61xc")
 flip_h = true
 

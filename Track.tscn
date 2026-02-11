@@ -153,10 +153,10 @@ position = Vector2(-437, -372)
 scale = Vector2(2.3200002, 2.3200002)
 
 [node name="Label" type="Label" parent="Panel/AspectRatioContainer/Panel/CenterContainer/GameMap/letter" unique_id=921396583]
-offset_left = -5.5315185
-offset_top = -12.425873
-offset_right = 34.468483
-offset_bottom = 10.574127
+offset_left = -2.5862062
+offset_top = -6.8965516
+offset_right = 37.413795
+offset_bottom = 16.103449
 scale = Vector2(0.5669729, 0.5669729)
 text = "A"
 
