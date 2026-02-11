@@ -91,6 +91,9 @@ func on_connected_changed(connected:bool) -> void:
 			carPath.remove_child(ownCar)
 			ownCar = null
 			%RtcBridge.send_text_message("I am leaving the RACE 🚗")
+			%TypeHelper.text = ""
+	else:
+		%TypeHelper.text = text.left(CHAR_VIEW_RANGE)
 
 func _ready() -> void:
 	#connect to RtcBridgeSignals
