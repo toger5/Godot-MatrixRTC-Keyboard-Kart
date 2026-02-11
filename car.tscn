@@ -1,7 +1,13 @@
 [gd_scene format=3 uid="uid://t4eau1c7jnnr"]
 
 [ext_resource type="Script" uid="uid://b1ryqfo8uh20r" path="res://car.gd" id="1_uoj53"]
-[ext_resource type="Texture2D" uid="uid://drvh0tw5e1q28" path="res://assets/cars/ice-cream-van-a.png" id="2_k61xc"]
+[ext_resource type="Shader" uid="uid://bfw8sq0ttdmr1" path="res://car.gdshader" id="2_06lh1"]
+[ext_resource type="Texture2D" uid="uid://dl8lp64m6x56h" path="res://assets/cars/blue-car.png" id="3_k61xc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_td361"]
+shader = ExtResource("2_06lh1")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 2.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_fo0vr"]
 outline_size = 2
@@ -16,8 +22,9 @@ rotates = false
 script = ExtResource("1_uoj53")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1813909526]
+material = SubResource("ShaderMaterial_td361")
 scale = Vector2(1.5, 1.5)
-texture = ExtResource("2_k61xc")
+texture = ExtResource("3_k61xc")
 flip_h = true
 
 [node name="Name" type="Label" parent="." unique_id=802800898]
