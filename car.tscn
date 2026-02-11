@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://t4eau1c7jnnr"]
+
+[ext_resource type="Script" uid="uid://b1ryqfo8uh20r" path="res://car.gd" id="1_uoj53"]
+[ext_resource type="Texture2D" uid="uid://drvh0tw5e1q28" path="res://assets/cars/ice-cream-van-a.png" id="2_k61xc"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fo0vr"]
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 5
+shadow_color = Color(0, 0, 0, 0.33333334)
+
+[node name="Car" type="PathFollow2D" unique_id=1085320103]
+modulate = Color(1, 1, 1, 0.53333336)
+z_index = 5
+rotates = false
+script = ExtResource("1_uoj53")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1813909526]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_k61xc")
+flip_h = true
+
+[node name="Name" type="Label" parent="." unique_id=802800898]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -221.0
+offset_top = -13.045095
+offset_right = -50.0
+offset_bottom = 9.954905
+grow_horizontal = 0
+pivot_offset = Vector2(32, 11)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "playerName"
+label_settings = SubResource("LabelSettings_fo0vr")
+horizontal_alignment = 2

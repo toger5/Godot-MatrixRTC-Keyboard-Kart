@@ -47,6 +47,7 @@ func on_rtc_member_update(members):
 		car.visible=true
 		carPath.add_child(car)
 		%RtcBridge.console.log("GODOT add car for:",JSON.stringify(opponent)," with id: ", opponent.id," with name: ", car.name_label)
+
 func on_local_rtc_member_update(member):
 	if(ownCar != null):
 		%RtcBridge.console.log("try adding own car again! wo do not do this yet")
@@ -101,7 +102,7 @@ func _ready() -> void:
 	
 	set_process_input(true)
 	
-	self.add_child(carPath)
+	#self.add_child(carPath)
 	%TypeHelper.text = text.left(CHAR_VIEW_RANGE)
 
 	for i in range(text.length()):

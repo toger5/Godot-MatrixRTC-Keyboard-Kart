@@ -10,6 +10,25 @@ var name_label: String = "unkownUser"
 var current_progress_animated = 0.0 # this progress goes beyond 1 to track multiple rounds. It is the animated version of car_postion
 var turn = 0
 var turn_start_ts = []
+var previous_global_x: float
+
+@onready var sprite: Sprite2D = $Sprite2D
+@onready var car_textures: Array[Texture2D] = [
+	preload("res://assets/cars/blue-car.png"),
+	preload("res://assets/cars/brown-datsun.png"),
+	preload("res://assets/cars/camper-van.png"),
+	preload("res://assets/cars/flatbed-with-house.png"),
+	preload("res://assets/cars/ice-cream-van-a.png"),
+	preload("res://assets/cars/ice-cream-van-b.png"),
+	preload("res://assets/cars/luton-van.png"),
+	preload("res://assets/cars/motor-cycle-a.png"),
+	preload("res://assets/cars/motor-cycle-b.png"),
+	preload("res://assets/cars/pink-jeep.png"),
+	preload("res://assets/cars/red-corolla.png"),
+	preload("res://assets/cars/white-plumbing-van.png"),
+	preload("res://assets/cars/yellow-bus.png"),
+	preload("res://assets/cars/yellow-sports-car.png")
+]
 
 signal car_position_update(car_postition: int, car_pos_text: int)
 signal turn_completed(turn: int, time: int)
@@ -61,6 +80,11 @@ func on_focus_lost():
 func _ready() -> void:
 	$Name.text = name_label
 	
+	previous_global_x = global_position.x
+	
+	var random_texture: Texture2D = car_textures.pick_random()
+	sprite.texture = random_texture
+	
 	if(is_own):
 		modulate = Color.WHITE
 		$Name.label_settings = $Name.label_settings.duplicate()
@@ -87,3 +111,11 @@ func _process(delta: float) -> void:
 	if(dir > 0):
 		current_progress_animated += step
 		self.progress_ratio = current_progress_animated
+	
+	var current_x = global_position.x
+	var delta_x = current_x - previous_global_x
+
+	if abs(delta_x) > 0.1:
+		sprite.flip_h = delta_x > 0
+
+	previous_global_x = current_x
